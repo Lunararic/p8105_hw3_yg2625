@@ -16,7 +16,15 @@ library(p8105.datasets)
 ```
 
 # Problem 1
+```{r}
 data(brfss_smart2010)
 brfss_data = 
   brfss_smart2010 %>% 
-  janitor::clean_names()
+  janitor::clean_names() %>% 
+  rename(.data =., state = locationabbr, county = locationdesc) %>% 
+  filter(.data =., topic == "Overall Health", response == "Excellent" || response == "Very good" || response == "Good" || response == "Fair" || reponse == "Poor") %>% 
+  mutate(.data = ., response = as.factor(response)) %>% 
+  arrange(.data = .,  match(response,c("Excellent", "Very good", "Good", "Fair", "Poor")))
+
+```
+
