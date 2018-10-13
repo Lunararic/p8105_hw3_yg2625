@@ -1,0 +1,22 @@
+---
+title: "hw3_yg2625"
+author: "Yue Gu"
+date: "October 13, 2018"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Library
+```{r}
+library(tidyverse)
+library(p8105.datasets)
+```
+
+# Problem 1
+data(brfss_smart2010)
+brfss_data = 
+  brfss_smart2010 %>% 
+  janitor::clean_names()
