@@ -95,16 +95,20 @@ insta_data %>%
     discrete = TRUE
   ) + 
     theme(legend.position = "bottom")
+```
 
 ## Table for most pop items
+```{r}
 insta_data %>% 
   filter(.data = ., aisle == "baking ingredients" | aisle == "dog food care" | aisle == "packaged vegetables fruits") %>% 
   group_by(aisle, product_name) %>%
   summarize(n = n()) %>% 
   filter(min_rank(desc(n)) == 1) %>% 
   knitr::kable()
+```
 
 ## Table for hr of the day
+```{r}
 insta_data %>% 
   filter(.data = ., product_name == "Pink Lady Apples" | product_name == "Coffee Ice Cream") %>% 
   group_by(order_dow, product_name) %>% 
@@ -112,6 +116,23 @@ insta_data %>%
   spread(key = order_dow, value = mean_hr) %>%
   rename(Mon = "0", Tues = "1", Wed = "2", Thrs = "3", Fri = "4", Sat = "5", Sun = "6", Product = product_name) %>% 
   knitr::kable(digit = 2)
+```
+
+# Problem 3
+## Data exploration
+
+```{r}
+data(ny_noaa)
+noaa_data = 
+  ny_noaa
+
+dim(ny_noaa)
+sum(is.na(ny_noaa$prcp))
+sum(is.na(ny_noaa$snow))
+sum(is.na(ny_noaa$snwd))
+sum(is.na(ny_noaa$tmax))
+sum(is.na(ny_noaa$tmin))
+
 ```
 
 
