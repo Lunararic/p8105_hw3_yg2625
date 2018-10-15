@@ -42,9 +42,9 @@ brfss_data %>%
   summarize(n_obs = n_distinct(county) == 7) %>% 
   filter(n_obs == T)
 ```
-Hence, by the output, CT, FL, NC were observed at 7 locations in 2002.
+### Hence, by the output, CT, FL, NC were observed at 7 locations in 2002.
 
-The spaghetti plot shown below
+### The "spaghetti plot"" shown below
 ```{r}
 brfss_data %>% 
   group_by(year, state) %>% 
@@ -52,7 +52,7 @@ brfss_data %>%
   ggplot(aes(x = year, y = n_obs, color = state)) + geom_line()
 ```
 
-Required table shown below
+### Required table shown below
 ```{r}
 brfss_data %>% 
   filter(.data = ., response == "Excellent", state == "NY", year == "2002"|year == "2006"|year == "2010") %>%
@@ -62,7 +62,7 @@ brfss_data %>%
   knitr::kable(digits = 2)
 ```
 
-Required five-panel plot shown below
+### Required five-panel plot shown below
 ```{r}
 brfss_data %>% 
   group_by(year, state, response) %>% 
@@ -72,6 +72,7 @@ brfss_data %>%
     facet_grid(.~response)
 ```
 
+
 # Problem 2
 
 ## Description of exploration
@@ -79,7 +80,6 @@ brfss_data %>%
 data("instacart")
 insta_data =
   instacart
-  
 
 dim(insta_data)
 n_distinct(insta_data$order_id)
@@ -88,13 +88,21 @@ n_distinct(insta_data$user_id)
 n_distinct(insta_data$aisle_id)
 n_distinct(insta_data$department_id)
 ```
+### Hence, by the output, we know the size of the dataset is 1384617 rows with 15 columns, there is 1384617 observations in the datasets. Every observations represent a product from an order, and there is 131209 unique orders, 39123 unique products, 131209 unique users and 21 departments in the datasets.
+### Some important key variables may include order_id, product_id, order_number, aisle_id and product_name, which provide us details of a product in an order from an aisle with the name a product.
+### For example, for the first observation in our dataset, we know its product ID is 49302 and it's the first item that was added to cart with the history of being ordered by the past.The product's customer ID is 112106 and it belows to the train. The order sequence of the product is the 4th that was placed on Thursday at 10. 9 days since the last order and it's BUlgarian Yogurt from 20th aisle named yogurt in 16th department called dairy eggs.
 
-## Aisles
+
+## Answering questions
+
 ```{r}
 n_distinct(insta_data$aisle)
 head(arrange(count(insta_data, aisle_id), desc(n)), n = 1)
+```
+### There are 134 unique aisles and the most items ordered aisle is N0.83 with 150609 products.
 
-## Plot
+### Requied Plot shown below
+```{r}
 insta_data %>% 
   group_by(aisle_id) %>% 
   summarize(n = n()) %>% 
@@ -107,7 +115,7 @@ insta_data %>%
     theme(legend.position = "bottom")
 ```
 
-## Table for most pop items
+### Table for most popopular items in 3 required aisles
 ```{r}
 insta_data %>% 
   filter(.data = ., aisle == "baking ingredients" | aisle == "dog food care" | aisle == "packaged vegetables fruits") %>% 
@@ -117,7 +125,7 @@ insta_data %>%
   knitr::kable()
 ```
 
-## Table for hr of the day
+## Table for the mean hour of the day ath 2 product name required
 ```{r}
 insta_data %>% 
   filter(.data = ., product_name == "Pink Lady Apples" | product_name == "Coffee Ice Cream") %>% 
