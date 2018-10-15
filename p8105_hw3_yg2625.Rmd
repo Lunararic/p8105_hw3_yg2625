@@ -125,7 +125,7 @@ insta_data %>%
   knitr::kable()
 ```
 
-## Table for the mean hour of the day ath 2 product name required
+### Table for the mean hour of the day ath 2 product name required
 ```{r}
 insta_data %>% 
   filter(.data = ., product_name == "Pink Lady Apples" | product_name == "Coffee Ice Cream") %>% 
@@ -145,15 +145,18 @@ noaa_data =
   ny_noaa
 
 dim(ny_noaa)
-sum(is.na(ny_noaa$prcp))
-sum(is.na(ny_noaa$snow))
-sum(is.na(ny_noaa$snwd))
-sum(is.na(ny_noaa$tmax))
-sum(is.na(ny_noaa$tmin))
+sum(is.na(ny_noaa$prcp))/nrow(noaa_data)
+sum(is.na(ny_noaa$snow))/nrow(noaa_data)
+sum(is.na(ny_noaa$snwd))/nrow(noaa_data)
+sum(is.na(ny_noaa$tmax))/nrow(noaa_data)
+sum(is.na(ny_noaa$tmin))/nrow(noaa_data)
 
 ```
+### By the output, we know the size of the data is 2595176 rows with 7 columns. There is 2595176 observations in the data containing weather statistics collected by each station.
+### Some key variables may include date, prcp, snow, tmax, tmin. Date gives us information about the year, month and day of the weather stats, prcp provides us precipitation in tenths of mm, snow tells us snowfall in mm, tmax tells us maximum temp in tenths of degrees C and tmin tells us minimum temp in tenths of degrees C.
+### There is lots of missing value in weather stats, there is 5.6% prcp, 14.7% snowfall, 22.8 snowdepth, 43.7% tmax and 43.7% tmin data is missing, which may cause some bias to the statistical analysis output.
 
-## Data cleaning
+## Data cleaning and Answering questions
 ```{r}
 noaa_data_tidy =
   noaa_data %>% 
@@ -163,9 +166,9 @@ noaa_data_tidy =
 
 head(arrange(count(noaa_data_tidy, snow), desc(n)), n = 1)
 ```
-0 is the most commonly obeserved value because not every day is snowing and when there's 0 snowfall when no snow is falling and the proportion of days in a year is relatively high.
+### 0 is the most commonly obeserved value in snowfall because not every day is snowing. And in the days without snow,there's 0 snowfall recorded and the proportion of days without snow in a year is relatively high.
 
-## Two-panel plot for avg max temp
+### Two-panel plot for avg max temp showing average max temp in Jan and July
 ```{r}
 noaa_data_tidy %>% 
   filter(.data = ., month == "01" | month == "07", tmax != "") %>% 
@@ -175,9 +178,9 @@ noaa_data_tidy %>%
     geom_point()+
     facet_grid(. ~ month)
 ```
+### By the graph, we could obverse that January has lower temperature compared to July throughout all year because January is in winter while July is in Summer in NY, which makes the temperature difference. There is several outliers in the graph in years including 1982, 1993, 1999, 2004 and etc. There are some relatively extreme outliers in 2005 Jan and 1988 July.
 
-
-## Two-panel plot for last question
+### Two-panel plot for showing (1) tmax vs tmin (2) distribution of snowfall values by year
 ```{r}
 library(patchwork)
 t_vs_p = ggplot(noaa_data_tidy, aes(x = tmax, y = tmin)) +
