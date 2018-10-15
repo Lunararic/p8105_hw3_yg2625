@@ -159,6 +159,23 @@ noaa_data_tidy %>%
 ```
 
 
+## Two-panel plot for last question
+```{r}
+library(patchwork)
+t_vs_p = ggplot(noaa_data_tidy, aes(x = tmax, y = tmin)) +
+  geom_hex()
+
+noaa_data_snow =
+  noaa_data_tidy %>% 
+  filter(.data = ., snow > 0 & snow < 100)
+
+snow_dist_p = ggplot(noaa_data_snow, aes(x = snow, fill = year)) +
+  geom_density()
+
+t_vs_p + snow_dist_p
+
+```
+
 
 
 
