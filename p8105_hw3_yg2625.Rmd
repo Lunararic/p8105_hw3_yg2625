@@ -82,8 +82,6 @@ n_distinct(insta_data$department_id)
 ## Aisles
 ```{r}
 n_distinct(insta_data$aisle)
-
-
 head(arrange(count(insta_data, aisle_id), desc(n)), n = 1)
 
 ## Plot
@@ -97,6 +95,23 @@ insta_data %>%
     discrete = TRUE
   ) + 
     theme(legend.position = "bottom")
+
+## Table for most pop items
+insta_data %>% 
+  filter(.data = ., aisle == "baking ingredients" | aisle == "dog food care" | aisle == "packaged vegetables fruits") %>% 
+  group_by(aisle, product_name) %>%
+  summarize(n = n()) %>% 
+  filter(min_rank(desc(n)) == 1) %>% 
+  knitr::kable()
+
+## Table for hr of the day
+insta_data %>% 
+  filter(.data = ., product_name == "Pink Lady Apples" | product_name == "Coffee Ice Cream") %>% 
+  group_by(order_dow, product_name) %>% 
+  summarize(mean_hr = mean(order_hour_of_day)) %>% 
+  spread(key = order_dow, value = mean_hr) %>%
+  rename(Mon = "0", Tues = "1", Wed = "2", Thrs = "3", Fri = "4", Sat = "5", Sun = "6", Product = product_name) %>% 
+  knitr::kable(digit = 2)
 ```
 
 
