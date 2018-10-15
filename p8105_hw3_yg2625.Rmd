@@ -114,7 +114,7 @@ insta_data %>%
   group_by(order_dow, product_name) %>% 
   summarize(mean_hr = mean(order_hour_of_day)) %>% 
   spread(key = order_dow, value = mean_hr) %>%
-  rename(Mon = "0", Tues = "1", Wed = "2", Thrs = "3", Fri = "4", Sat = "5", Sun = "6", Product = product_name) %>% 
+  rename(Sun = "0", Mon = "1", Tues = "2", Wed = "3", Thrs = "4", Fri = "5", Sat = "6", Product = product_name) %>% 
   knitr::kable(digit = 2)
 ```
 
@@ -134,6 +134,33 @@ sum(is.na(ny_noaa$tmax))
 sum(is.na(ny_noaa$tmin))
 
 ```
+
+## Data cleaning
+```{r}
+noaa_data_tidy =
+  noaa_data %>% 
+  separate(date, into = c("year", "month", "day"), sep = "-") %>% 
+  mutate(.data = ., prcp = as.numeric(prcp)/10, tmax = as.numeric(tmax)/10, tmin = as.numeric(tmin)/10)
+
+
+head(arrange(count(noaa_data_tidy, snow), desc(n)), n = 1)
+```
+0 is the most commonly obeserved value because not every day is snowing and when there's 0 snowfall when no snow is falling and the proportion of days in a year is relatively high.
+
+## Two-panel plot for avg max temp
+```{r}
+noaa_data_tidy %>% 
+  filter(.data = ., month == "01" | month == "07", tmax != "") %>% 
+  group_by(id, month, year) %>%
+  summarize(tmax_mean = mean(tmax)) %>% 
+  ggplot(aes(x = year, y = tmax_mean)) +
+    geom_point()+
+    facet_grid(. ~ month)
+```
+
+
+
+
 
 
 
