@@ -11,8 +11,8 @@ library(tidyverse)
 library(p8105.datasets)
 
 knitr::opts_chunk$set(echo = TRUE,
-                      fig.width = 10,
-                      fig.height = 15,
+                      fig.width = 15,
+                      fig.height = 5,
                       fig.asp = 0.6,
                       out.width = "90%")
 
@@ -64,6 +64,7 @@ brfss_data %>%
 
 # Problem 2
 
+## Description of exploration
 ```{r}
 data("instacart")
 insta_data =
@@ -71,9 +72,34 @@ insta_data =
   
 
 dim(insta_data)
-
-  
+n_distinct(insta_data$order_id)
+n_distinct(insta_data$product_id)
+n_distinct(insta_data$user_id)
+n_distinct(insta_data$aisle_id)
+n_distinct(insta_data$department_id)
 ```
+
+## Aisles
+```{r}
+n_distinct(insta_data$aisle)
+
+
+head(arrange(count(insta_data, aisle_id), desc(n)), n = 1)
+
+## Plot
+insta_data %>% 
+  group_by(aisle_id) %>% 
+  summarize(n = n()) %>% 
+  ggplot(aes(x = as.character(aisle_id), y = n, color = as.character(aisle_id))) +
+    geom_point(alpha = 0.5) +
+    viridis::scale_color_viridis(
+    name = "Aisle ID", 
+    discrete = TRUE
+  ) + 
+    theme(legend.position = "bottom")
+```
+
+
 
 
 
